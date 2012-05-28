@@ -143,7 +143,12 @@ class Stats extends Sprite {
 			graph.setPixel(XPOS, ms_graph, Colors.ms);
 			graph.unlock();
 
-			fpsStr		= "FPS: " + fps + " / " + stage.frameRate;
+			//fpsStr		= "FPS: " + fps + " / " + stage.frameRate;
+			
+			if(fps > 60)
+				fps = 60;
+			fpsStr		= "FPS: " + fps + " / 60";
+			
 			memStr		= "MEM: " + Math.round(mem);
 			memMaxStr	= "MAX: " + Math.round(mem_max);
 
