@@ -101,7 +101,17 @@ class Stats extends Sprite {
 		this.addEventListener(Event.ENTER_FRAME, update);
 		
 		if (alignRight)
-			x = Lib.current.stage.stageWidth - width;
+		{
+			//This is hardcoded for portrait - fix this!!!
+			x = _stage.stageWidth - width;
+			
+			#if (mobile && !android)
+			if(scripts.MyAssets.landscape)
+			{
+				x = _stage.stageHeight - width;
+			}
+			#end
+		}
 	}
 
 	private function destroy(e : Event) {
@@ -143,6 +153,7 @@ class Stats extends Sprite {
 			graph.setPixel(XPOS, ms_graph, Colors.ms);
 			graph.unlock();
 
+			
 			//fpsStr		= "FPS: " + fps + " / " + stage.frameRate;
 			
 			if(fps > 60)
@@ -158,24 +169,20 @@ class Stats extends Sprite {
 			fps = 0;
 			ms_prev = timer;
 
+			var htmlText:String = "<font color='" + Colors.fpsCSS +"'>" + fpsStr + "</font>" +
+				"<br>" +
+				"<font color='" + Colors.memCSS +"'>" + memStr + "</font>" +
+				"<br>" +
+				"<font color='" + Colors.memmaxCSS +"'>" + memMaxStr + "</font>";
+				
+			text.htmlText = htmlText;
 			return;
 		}
 		
 		//increment number of frames which have occurred in current second
 		fps++;
 
-		msStr = "MS: " + (timer - ms);
 		ms = timer;
-		
-		var htmlText:String = "<font color='" + Colors.fpsCSS +"'>" + fpsStr + "</font>" +
-						"<br>" +
-						"<font color='" + Colors.memCSS +"'>" + memStr + "</font>" +
-						"<br>" +
-						"<font color='" + Colors.memmaxCSS +"'>" + memMaxStr + "</font>" +
-						"<br>" +
-						"<font color='" + Colors.msCSS +"'>" + msStr + "</font>";
-						
-		text.htmlText = htmlText;
 	}
 
 
