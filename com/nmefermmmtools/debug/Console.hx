@@ -241,7 +241,7 @@ class Console
 	
 	private static function traceHandler(value:Dynamic, ?positionInformation:PosInfos):Void 
 	{
-		untyped __global__["trace"]("Stencyl:" + value);
+		untyped __global__["trace"]("Stencyl:" + positionInformation.className+"."+positionInformation.methodName+"("+positionInformation.lineNumber+"): " + value);
 		
 		// If the passed value is null, call the writeNull method.
 		if (value == null) {
