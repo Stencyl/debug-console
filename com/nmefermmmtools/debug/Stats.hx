@@ -102,15 +102,7 @@ class Stats extends Sprite {
 		
 		if (alignRight)
 		{
-			//This is hardcoded for portrait - fix this!!!
 			x = _stage.stageWidth - width;
-			
-			#if (mobile && !android)
-			if(scripts.MyAssets.landscape)
-			{
-				x = _stage.stageHeight - width;
-			}
-			#end
 		}
 	}
 
