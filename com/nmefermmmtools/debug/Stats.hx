@@ -22,7 +22,7 @@ import nme.events.Event;
 import nme.events.MouseEvent;
 import nme.geom.Matrix;
 import nme.geom.Rectangle;
-import flash.system.System;
+import nme.system.System;
 import nme.text.TextField;
 import nme.display.Stage;
 import nme.text.TextFormat;
@@ -34,8 +34,8 @@ class Stats extends Sprite {
 
 	static inline var GRAPH_WIDTH : Int = 70;
 	static inline var XPOS : Int = 69;//width - 1
-	static inline var GRAPH_HEIGHT : Int = 50;
-	static inline var TEXT_HEIGHT : Int = 50;
+	static inline var GRAPH_HEIGHT : Int = #if js 1 #else 50 #end;
+	static inline var TEXT_HEIGHT : Int = #if js 15 #else 50 #end;
 
 	private var text : TextField;
 
@@ -70,7 +70,8 @@ class Stats extends Sprite {
 		this.alignRight = alignRight;
 		mem_max = 0;
 		fps = 0;
-				
+		
+		#if(!js)
 		text = new TextField();
 		text.defaultTextFormat = new TextFormat("_sans", 9, null, null, null, null, null, null, null, null, null, null, -2);
 		text.multiline = true;
@@ -78,8 +79,18 @@ class Stats extends Sprite {
 		text.height = TEXT_HEIGHT;
 		text.selectable = false;
 		text.mouseEnabled = false;
+		#else
+		text = new TextField();
+		text.width = GRAPH_WIDTH;
+		text.height = TEXT_HEIGHT;
+		text.defaultTextFormat = new TextFormat("_sans", 10, Colors.fps);
+		text.selectable = false;
+		text.mouseEnabled = false;
+		text.wordWrap = true;
+		text.multiline = true;	
+		#end
 		
-		rectangle = new Rectangle(GRAPH_WIDTH - 1, 0, 1, GRAPH_HEIGHT);			
+		rectangle = new Rectangle(GRAPH_WIDTH - 1, 0, 1, GRAPH_HEIGHT);
 
 		this.addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
 		this.addEventListener(Event.REMOVED_FROM_STAGE, destroy, false, 0, true);
@@ -129,6 +140,7 @@ class Stats extends Sprite {
 			mem = System.totalMemory * 0.000000954;
 			mem_max = mem_max > mem ? mem_max : mem;
 
+			#if(!js)
 			fps_graph = GRAPH_HEIGHT - Std.int( Math.min(GRAPH_HEIGHT, ( fps / _stage.frameRate ) * GRAPH_HEIGHT) );
 
 			mem_graph = GRAPH_HEIGHT - normalizeMem(mem);
@@ -144,7 +156,7 @@ class Stats extends Sprite {
 			graph.setPixel(XPOS, mem_max_graph, Colors.memmax);
 			graph.setPixel(XPOS, ms_graph, Colors.ms);
 			graph.unlock();
-
+			#end
 			
 			//fpsStr		= "FPS: " + fps + " / " + stage.frameRate;
 			
@@ -161,6 +173,7 @@ class Stats extends Sprite {
 			fps = 0;
 			ms_prev = timer;
 
+			#if(!js)
 			var htmlText:String = "<font color='" + Colors.fpsCSS +"'>" + fpsStr + "</font>" +
 				"<br>" +
 				"<font color='" + Colors.memCSS +"'>" + memStr + "</font>" +
@@ -168,6 +181,9 @@ class Stats extends Sprite {
 				"<font color='" + Colors.memmaxCSS +"'>" + memMaxStr + "</font>";
 				
 			text.htmlText = htmlText;
+			#else
+			text.text = fpsStr;
+			#end
 			return;
 		}
 		
