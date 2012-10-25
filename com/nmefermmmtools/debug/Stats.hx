@@ -111,9 +111,21 @@ class Stats extends Sprite {
 
 		this.addEventListener(Event.ENTER_FRAME, update);
 		
-		if (alignRight)
+		if(alignRight)
 		{
+			#if(mobile && !android && !air)
+			if(_stage.stageWidth < _stage.stageHeight && scripts.MyAssets.landscape)
+			{
+				x = _stage.stageHeight - width;
+			}
+			
+			else
+			{
+				x = _stage.stageWidth - width;
+			}
+			#else
 			x = _stage.stageWidth - width;
+			#end
 		}
 	}
 
