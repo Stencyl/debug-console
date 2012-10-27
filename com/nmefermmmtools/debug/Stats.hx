@@ -114,14 +114,14 @@ class Stats extends Sprite {
 		if(alignRight)
 		{
 			#if(mobile && !android && !air)
-			if(_stage.stageWidth < _stage.stageHeight && scripts.MyAssets.landscape)
+			if(Std.int(nme.system.Capabilities.screenResolutionX) < Std.int(nme.system.Capabilities.screenResolutionY) && scripts.MyAssets.landscape)
 			{
-				x = _stage.stageHeight - width;
+				x = Std.int(nme.system.Capabilities.screenResolutionY) - width;
 			}
 			
 			else
 			{
-				x = _stage.stageWidth - width;
+				x = Std.int(nme.system.Capabilities.screenResolutionX) - width;
 			}
 			#else
 			x = _stage.stageWidth - width;
