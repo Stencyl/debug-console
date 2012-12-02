@@ -49,6 +49,7 @@ class Stats extends Sprite {
 	private var graph : BitmapData;
 	private var rectangle : Rectangle;
 	private var alignRight : Bool;
+	private var start : Bool;
 
 	private var fps_graph : Int;
 	private var mem_graph : Int;
@@ -68,6 +69,7 @@ class Stats extends Sprite {
 	{
 		super();
 		this.alignRight = alignRight;
+		start = true;
 		mem_max = 0;
 		fps = 0;
 		
@@ -144,6 +146,15 @@ class Stats extends Sprite {
 
 	private function update(e : Event) {
 
+		//fix alignment on linux
+		#if(!mobile)
+		if(start && alignRight)
+		{
+			x = _stage.stageWidth - width;
+			start = false;
+		}
+		#end
+		
 		timer = flash.Lib.getTimer();
 		
 		//after a second has passed 
