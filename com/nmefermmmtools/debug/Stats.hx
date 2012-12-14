@@ -125,6 +125,8 @@ class Stats extends Sprite {
 			{
 				x = Std.int(nme.system.Capabilities.screenResolutionX) - width;
 			}
+			#elseif(air)
+			x = Std.int(nme.system.Capabilities.screenResolutionX) - width;
 			#else
 			x = _stage.stageWidth - width;
 			#end
