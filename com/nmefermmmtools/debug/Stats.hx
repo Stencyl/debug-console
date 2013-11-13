@@ -75,7 +75,7 @@ class Stats extends Sprite {
 		
 		#if(!js)
 		text = new TextField();
-		text.defaultTextFormat = new TextFormat("_sans", 9, null, null, null, null, null, null, null, null, null, null, -2);
+		text.defaultTextFormat = new TextFormat("_sans", 9, 0xffff00, null, null, null, null, null, null, null, null, null, -2);
 		text.multiline = true;
 		text.width = GRAPH_WIDTH;
 		text.height = TEXT_HEIGHT;
@@ -85,7 +85,7 @@ class Stats extends Sprite {
 		text = new TextField();
 		text.width = GRAPH_WIDTH;
 		text.height = TEXT_HEIGHT;
-		text.defaultTextFormat = new TextFormat("_sans", 10, Colors.fps);
+		text.defaultTextFormat = new TextFormat("_sans", 10, 0xffffff);
 		text.selectable = false;
 		text.mouseEnabled = false;
 		text.wordWrap = true;
@@ -115,7 +115,7 @@ class Stats extends Sprite {
 		
 		if(alignRight)
 		{
-			#if(mobile && !android && !air)
+			/*#if(mobile && !air)
 			if(Std.int(nme.system.Capabilities.screenResolutionX) < Std.int(nme.system.Capabilities.screenResolutionY) && scripts.MyAssets.landscape)
 			{
 				x = Std.int(nme.system.Capabilities.screenResolutionY) - width;
@@ -129,7 +129,7 @@ class Stats extends Sprite {
 			x = Std.int(nme.system.Capabilities.screenResolutionX) - width;
 			#else
 			x = _stage.stageWidth - width;
-			#end
+			#end*/
 		}
 	}
 
@@ -198,7 +198,15 @@ class Stats extends Sprite {
 			fps = 0;
 			ms_prev = timer;
 
-			#if(!js)
+			#if(android)
+			var htmlText:String = fpsStr +
+				"<br>" +
+				memStr +
+				"<br>" +
+				memMaxStr;
+				
+			text.htmlText = htmlText;
+			#elseif(!js)
 			var htmlText:String = "<font color='" + Colors.fpsCSS +"'>" + fpsStr + "</font>" +
 				"<br>" +
 				"<font color='" + Colors.memCSS +"'>" + memStr + "</font>" +
@@ -209,6 +217,7 @@ class Stats extends Sprite {
 			#else
 			text.text = fpsStr;
 			#end
+			
 			return;
 		}
 		
@@ -234,9 +243,9 @@ class Colors {
 	public static inline var mem : Int = 0x00ffff;
 	public static inline var memmax : Int = 0xff0070;
 	public static inline var bgCSS : String = "#000033";
-	public static inline var fpsCSS : String = "#ffff00";
 	public static inline var msCSS : String = "#00ff00";
+	
+	public static inline var fpsCSS : String = "#ffff00";
 	public static inline var memCSS : String = "#00ffff";
 	public static inline var memmaxCSS : String = "#ff0070";
-	
 }
