@@ -12,6 +12,10 @@ import nme.text.TextFieldType;
 import nme.net.SharedObject;
 import nme.Lib;
 
+import StringTools;
+import nme.text.TextFormat;
+import nme.text.AntiAliasType;
+import nme.text.TextFieldType;
 
 /**
  * ...
@@ -33,14 +37,14 @@ class Console
 	private static inline var INPUT_BAR_HISTORY_MAX_ELEMENTS:Int = 50;
 	
 	private static var visualContainer		:Sprite;
-	private static var commands				:Hash<Dynamic>;
+	private static var commands				:Map<String, Dynamic>;
 	private static var stageRef				:Stage;
 	private static var keyCode				:Int;
 	private static var ctrlIsDown			:Bool = false;
 	private static var ctrlMode				:Bool = true;
 	private static var inputBar				:Bar;
-	private static var liveDataFields		:Hash<Bar>;
-	private static var chronometers			:Hash<Chronometer>;
+	private static var liveDataFields		:Map<String, Bar>;
+	private static var chronometers			:Map<String, Chronometer>;
 	private static var width				:Float;
 	private static var sharedObject			:SharedObject;
 	private static var inputBarHistory		:Array<String>;
@@ -66,9 +70,9 @@ class Console
 		keyCode 			= toggleKeyCode;
 		ctrlMode 			= withControlKeyPressed;
 		visualContainer 	= new Sprite();
-		commands 			= new Hash<Dynamic>();
-		liveDataFields 		= new Hash<Bar>();
-		chronometers 		= new Hash<Chronometer>();
+		commands 			= new Map<String, Dynamic>();
+		liveDataFields 		= new Map<String, Bar>();
+		chronometers 		= new Map<String, Chronometer>();
 		sharedObject		= SharedObject.getLocal("NMEConsoleData");
 		inputBarHistory		= sharedObject.data.inputBarHistory;
 		historyCurrentIndex = -1;
@@ -216,7 +220,7 @@ class Console
 			onResize();
 		}
 	}
-	
+
 	public static function measureTime(name:String, showMaxValue:Bool = false, showAsLiveDataField:Bool = true):Int
 	{
 		if (!chronometers.exists(name))
@@ -585,10 +589,6 @@ class OutputHandler
 	}
 }
 
-import nme.text.TextFormat;
-import StringTools;
-import nme.text.AntiAliasType;
-
 class ConsoleText
 {
 	public static var textField:TextField;
@@ -719,9 +719,6 @@ class XMLPrettyPrinter
 	}
 }
 
-import nme.text.TextFieldType;
-import nme.text.AntiAliasType;
-
 class Bar
 {
 	public var visualContainer:Sprite;
@@ -792,8 +789,6 @@ class GraphicRectangle extends Sprite
 	}
 	
 }
-
-import nme.Lib;
 
 class Chronometer 
 {
