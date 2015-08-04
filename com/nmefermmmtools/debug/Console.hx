@@ -664,6 +664,7 @@ class XMLPrettyPrinter
 				if (StringTools.ltrim(child.nodeValue).length != 0) {
 					return true;
 				}
+				case _: {}
 			}
 		}
 		return false;
@@ -712,6 +713,7 @@ class XMLPrettyPrinter
 			if (nodeValue.length != 0) {
 				ConsoleText.write(createTabs(depth) + nodeValue, 0xFFFFFF, true);
 			}
+			case _: {}
 		}
 	}
 	public static function writeXml(value:Xml):Void {
