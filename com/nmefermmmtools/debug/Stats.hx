@@ -16,18 +16,18 @@
 
 package com.nmefermmmtools.debug;
 	
-import nme.display.BitmapData;
-import nme.display.Sprite;
-import nme.events.Event;
-import nme.events.MouseEvent;
-import nme.geom.Matrix;
-import nme.geom.Rectangle;
-import nme.system.System;
-import nme.text.TextField;
-import nme.display.Stage;
-import nme.text.TextFormat;
+import openfl.display.BitmapData;
+import openfl.display.Sprite;
+import openfl.events.Event;
+import openfl.events.MouseEvent;
+import openfl.geom.Matrix;
+import openfl.geom.Rectangle;
+import openfl.system.System;
+import openfl.text.TextField;
+import openfl.display.Stage;
+import openfl.text.TextFormat;
 import Xml;
-import nme.Lib;
+import openfl.Lib;
 
 
 class Stats extends Sprite {	
@@ -116,17 +116,17 @@ class Stats extends Sprite {
 		if(alignRight)
 		{
 			/*#if(mobile && !air)
-			if(Std.int(nme.system.Capabilities.screenResolutionX) < Std.int(nme.system.Capabilities.screenResolutionY) && scripts.MyAssets.landscape)
+			if(Std.int(openfl.system.Capabilities.screenResolutionX) < Std.int(openfl.system.Capabilities.screenResolutionY) && scripts.MyAssets.landscape)
 			{
-				x = Std.int(nme.system.Capabilities.screenResolutionY) - width;
+				x = Std.int(openfl.system.Capabilities.screenResolutionY) - width;
 			}
 			
 			else
 			{
-				x = Std.int(nme.system.Capabilities.screenResolutionX) - width;
+				x = Std.int(openfl.system.Capabilities.screenResolutionX) - width;
 			}
 			#elseif(air)
-			x = Std.int(nme.system.Capabilities.screenResolutionX) - width;
+			x = Std.int(openfl.system.Capabilities.screenResolutionX) - width;
 			#else
 			x = _stage.stageWidth - width;
 			#end*/
