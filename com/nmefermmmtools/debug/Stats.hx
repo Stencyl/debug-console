@@ -108,8 +108,6 @@ class Stats extends Sprite {
 		this.addChild(text);
 		
 		graph = new BitmapData(GRAPH_WIDTH, GRAPH_HEIGHT, false, Colors.bg);
-		graphics.beginBitmapFill(graph, new Matrix(1, 0, 0, 1, 0, TEXT_HEIGHT));
-		graphics.drawRect(0, TEXT_HEIGHT, GRAPH_WIDTH, GRAPH_HEIGHT);
 
 		this.addEventListener(Event.ENTER_FRAME, update);
 		
@@ -174,6 +172,10 @@ class Stats extends Sprite {
 			ms_graph = Std.int( GRAPH_HEIGHT - ( ( timer - ms ) >> 1 ));
 			graph.scroll(-1, 0);
 
+			graphics.beginBitmapFill(graph, new Matrix(1, 0, 0, 1, 0, TEXT_HEIGHT));
+			graphics.drawRect(0, TEXT_HEIGHT, GRAPH_WIDTH, GRAPH_HEIGHT);
+			graphics.endFill();
+			
 			graph.fillRect(rectangle, Colors.bg);
 			graph.lock();
 			graph.setPixel(XPOS, fps_graph, Colors.fps);
