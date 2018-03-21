@@ -172,6 +172,10 @@ class Stats extends Sprite {
 			ms_graph = Std.int( GRAPH_HEIGHT - ( ( timer - ms ) >> 1 ));
 			graph.scroll(-1, 0);
 
+			graphics.clear();
+			graphics.beginFill(Colors.bg);
+			graphics.drawRect(0, 0, GRAPH_WIDTH, TEXT_HEIGHT);
+			graphics.endFill();
 			graphics.beginBitmapFill(graph, new Matrix(1, 0, 0, 1, 0, TEXT_HEIGHT));
 			graphics.drawRect(0, TEXT_HEIGHT, GRAPH_WIDTH, GRAPH_HEIGHT);
 			graphics.endFill();
