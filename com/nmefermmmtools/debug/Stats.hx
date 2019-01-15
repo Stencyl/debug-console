@@ -32,10 +32,12 @@ import openfl.Lib;
 
 class Stats extends Sprite {	
 
+	static inline var FPS_ONLY = false;
+
 	static inline var GRAPH_WIDTH : Int = 70;
 	static inline var XPOS : Int = 69;//width - 1
-	static inline var GRAPH_HEIGHT : Int = #if js 1 #else 50 #end;
-	static inline var TEXT_HEIGHT : Int = #if js 15 #else 50 #end;
+	static inline var GRAPH_HEIGHT : Int = FPS_ONLY ? 1 : 50;
+	static inline var TEXT_HEIGHT : Int = FPS_ONLY ? 15 : 50;
 
 	private var text : TextField;
 
@@ -73,24 +75,18 @@ class Stats extends Sprite {
 		mem_max = 0;
 		fps = 0;
 		
-		#if(!js)
 		text = new TextField();
+		#if js
+		text.defaultTextFormat = new TextFormat("_sans", 10, 0xffffff);
+		#else
 		text.defaultTextFormat = new TextFormat("_sans", 9, 0xffff00, null, null, null, null, null, null, null, null, null, -2);
+		#end
+		text.wordWrap = !FPS_ONLY;
 		text.multiline = true;
 		text.width = GRAPH_WIDTH;
 		text.height = TEXT_HEIGHT;
 		text.selectable = false;
 		text.mouseEnabled = false;
-		#else
-		text = new TextField();
-		text.width = GRAPH_WIDTH;
-		text.height = TEXT_HEIGHT;
-		text.defaultTextFormat = new TextFormat("_sans", 10, 0xffffff);
-		text.selectable = false;
-		text.mouseEnabled = false;
-		text.wordWrap = true;
-		text.multiline = true;	
-		#end
 		
 		rectangle = new Rectangle(GRAPH_WIDTH - 1, 0, 1, GRAPH_HEIGHT);
 
@@ -163,31 +159,32 @@ class Stats extends Sprite {
 			mem = System.totalMemory * 0.000000954;
 			mem_max = mem_max > mem ? mem_max : mem;
 
-			#if(!js)
-			fps_graph = GRAPH_HEIGHT - Std.int( Math.min(GRAPH_HEIGHT, ( fps / _stage.frameRate ) * GRAPH_HEIGHT) );
+			if(!FPS_ONLY)
+			{
+				fps_graph = GRAPH_HEIGHT - Std.int( Math.min(GRAPH_HEIGHT, ( fps / _stage.frameRate ) * GRAPH_HEIGHT) );
 
-			mem_graph = GRAPH_HEIGHT - normalizeMem(mem);
-			mem_max_graph = GRAPH_HEIGHT - normalizeMem(mem_max);
-			//milliseconds since last frame -- this fluctuates quite a bit
-			ms_graph = Std.int( GRAPH_HEIGHT - ( ( timer - ms ) >> 1 ));
-			graph.scroll(-1, 0);
+				mem_graph = GRAPH_HEIGHT - normalizeMem(mem);
+				mem_max_graph = GRAPH_HEIGHT - normalizeMem(mem_max);
+				//milliseconds since last frame -- this fluctuates quite a bit
+				ms_graph = Std.int( GRAPH_HEIGHT - ( ( timer - ms ) >> 1 ));
+				graph.scroll(-1, 0);
 
-			graphics.clear();
-			graphics.beginFill(Colors.bg);
-			graphics.drawRect(0, 0, GRAPH_WIDTH, TEXT_HEIGHT);
-			graphics.endFill();
-			graphics.beginBitmapFill(graph, new Matrix(1, 0, 0, 1, 0, TEXT_HEIGHT));
-			graphics.drawRect(0, TEXT_HEIGHT, GRAPH_WIDTH, GRAPH_HEIGHT);
-			graphics.endFill();
-			
-			graph.fillRect(rectangle, Colors.bg);
-			graph.lock();
-			graph.setPixel(XPOS, fps_graph, Colors.fps);
-			graph.setPixel(XPOS, mem_graph, Colors.mem);
-			graph.setPixel(XPOS, mem_max_graph, Colors.memmax);
-			graph.setPixel(XPOS, ms_graph, Colors.ms);
-			graph.unlock();
-			#end
+				graphics.clear();
+				graphics.beginFill(Colors.bg);
+				graphics.drawRect(0, 0, GRAPH_WIDTH, TEXT_HEIGHT);
+				graphics.endFill();
+				graphics.beginBitmapFill(graph, new Matrix(1, 0, 0, 1, 0, TEXT_HEIGHT));
+				graphics.drawRect(0, TEXT_HEIGHT, GRAPH_WIDTH, GRAPH_HEIGHT);
+				graphics.endFill();
+				
+				graph.fillRect(rectangle, Colors.bg);
+				graph.lock();
+				graph.setPixel(XPOS, fps_graph, Colors.fps);
+				graph.setPixel(XPOS, mem_graph, Colors.mem);
+				graph.setPixel(XPOS, mem_max_graph, Colors.memmax);
+				graph.setPixel(XPOS, ms_graph, Colors.ms);
+				graph.unlock();
+			}
 			
 			//fpsStr		= "FPS: " + fps + " / " + stage.frameRate;
 			
@@ -212,16 +209,21 @@ class Stats extends Sprite {
 				memMaxStr;
 				
 			text.htmlText = htmlText;
-			#elseif(!js)
-			var htmlText:String = "<font color='" + Colors.fpsCSS +"'>" + fpsStr + "</font>" +
+			#else
+			if(FPS_ONLY)
+			{
+				text.text = fpsStr;
+			}
+			else
+			{
+				var htmlText:String = "<font color='" + Colors.fpsCSS +"'>" + fpsStr + "</font>" +
 				"<br>" +
 				"<font color='" + Colors.memCSS +"'>" + memStr + "</font>" +
 				"<br>" +
 				"<font color='" + Colors.memmaxCSS +"'>" + memMaxStr + "</font>";
 				
-			text.htmlText = htmlText;
-			#else
-			text.text = fpsStr;
+				text.htmlText = htmlText;
+			}
 			#end
 			
 			return;
