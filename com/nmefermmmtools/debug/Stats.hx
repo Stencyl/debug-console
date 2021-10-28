@@ -96,7 +96,7 @@ class Stats extends Sprite {
 
 	private function init(e : Event) {
 
-		_stage = flash.Lib.current.stage;
+		_stage = openfl.Lib.current.stage;
 		graphics.beginFill(Colors.bg);
 		graphics.drawRect(0, 0, GRAPH_WIDTH, TEXT_HEIGHT);
 		graphics.endFill();
@@ -151,7 +151,7 @@ class Stats extends Sprite {
 		}
 		#end
 		
-		timer = flash.Lib.getTimer();
+		timer = openfl.Lib.getTimer();
 		
 		//after a second has passed 
 		if( timer - 1000 > ms_prev ) {
